@@ -12,7 +12,7 @@ router.post('/', Authorization.ensureAuth, async (req, res) => {
     const [command, ...data] = getParams;
     
     try {
-        const commands = await Network.commands(command, data)
+        const commands = await Network.commands(command, data, req.user)
         response.success(res, commands, 200)
     } catch (error) {
         console.error('[ERROR] => ', error)

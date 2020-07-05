@@ -7,9 +7,8 @@ const jwt = require('../auth/jwt');
 const registerAccount = async (data, tweets = 0, followers = 0, follows = 0) => {
     try {
         if (data) {
-            const user_name = data[0]
-            let password = data[1]
-            password = await bcrypt.hash(password, 5)
+            let [ user_name, password ] = data
+            password = await bcrypt.hash(password, 5) 
             return await Store.registerAccount({ user_name, password, tweets, followers, follows })
         }
         throw new Error('Missing Data')
@@ -22,8 +21,7 @@ const registerAccount = async (data, tweets = 0, followers = 0, follows = 0) => 
 const loginAccount = async (data) => {
     try {
         if (data) {
-            const user_name = data[0]
-            const password = data[1]
+            const [ user_name, password ] = data
             const account = await Store.loginAccount(user_name)
             if (!account) {
                 throw new Error('Bad Request')
@@ -43,7 +41,8 @@ const loginAccount = async (data) => {
 
 const findAccount = async (data) => {
     try {
-        return await Store.findAccount(data[0])
+        const [ user_name ] = data
+        return await Store.findAccount(user_name)
     } catch (error) {
         console.error('[ERROR] =>', error)
         throw new Error(error)
