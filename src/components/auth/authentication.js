@@ -6,13 +6,14 @@ const secret = 'password';
 
 exports.ensureAuth = (req, res, next) => {
     const { commands } = req.body;
-    const splitCommand = commands.split(' ');
-    const getCommand = splitCommand[0].toLowerCase();
+    const getParams = commands.split(' ');
+    let [ command ] = getParams;
+    command = command.toLowerCase();
 
-    if (getCommand === 'register' || getCommand === 'login') {
+    if (command === 'register' || command === 'login') {
         next();
     } else {
-        if (!req.headers.authorization && getCommand !== 'register' && getCommand !== 'login') {
+        if (!req.headers.authorization && command !== 'register' && command !== 'login') {
             return res.status(403).send({ error: 'Needs Authorization' });
         }
 

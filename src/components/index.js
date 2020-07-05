@@ -8,17 +8,11 @@ const Authorization = require('./auth/authentication')
 
 router.post('/', Authorization.ensureAuth, async (req, res) => {
     const { commands } = req.body
-    const splitCommand = commands.split(' ')
-    const getCommand = splitCommand[0]
-    let data = []
-
-    for (let i = 1; i < splitCommand.length; i++) {
-        const newData = splitCommand[i];
-        data.push(newData)
-    }
-
+    const getParams = commands.split(' ')
+    const [command, ...data] = getParams;
+    
     try {
-        const commands = await Network.commands(getCommand, data)
+        const commands = await Network.commands(command, data)
         response.success(res, commands, 200)
     } catch (error) {
         console.error('[ERROR] => ', error)
