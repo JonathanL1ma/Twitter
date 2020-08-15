@@ -5,7 +5,9 @@ const Schema = mongoose.Schema
 const schema = Schema({
     owner: { type: String, required: true },
     tweets: [{
-        content: { type: String, required: true }
+        content: { type: String, required: true },
+        theyLiked: [],
+        likes: { type: Number, required: true }
     }]
 })
 

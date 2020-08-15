@@ -2,6 +2,8 @@
 const FollowController = require('./follows/controller')
 const TweetController = require('./tweets/controller')
 const UserController = require('./users/controller')
+const CommentController = require('./comments/controller')
+const RetweetController = require('./retweets/controller')
 
 const commands = async (command, data, payload) => {
     command = command.toLowerCase();
@@ -61,6 +63,30 @@ const commands = async (command, data, payload) => {
                 throw new Error('Bad Request')
             }
             return await UserController.findAccount(data)
+
+        case "like_tweet":
+            if(data.length !== 1) {
+                throw new Error('Bad Request')
+            }
+            return await TweetController.likeTweet(data, payload.sub)
+
+        case "dislike_tweet":
+            if(data.length !== 1) {
+                throw new Error('Bad Request')
+            }
+            return await TweetController.dislikeTweet(data, payload.sub)
+
+        case "reply_tweet":
+            if (data.length < 2) {
+                throw new Error('Bad Request')
+            }
+            return await CommentController.replyTweet(data, payload.sub)
+
+        case "retweet":
+            if (data.length > 2) {
+                throw new Error('Bad Request')
+            }
+            return await RetweetController.retweet(data, payload.sub)
 
         default:
             throw new Error('Bad Request')

@@ -56,4 +56,30 @@ const viewTweets = async (user_name) => {
     }
 }
 
-module.exports = { addTweet, updateTweet, deleteTweet, viewTweets }
+const likeTweet = async (tweet, user) => {
+    try {
+        if (tweet) {
+            tweet = tweet.pop()
+            return await Store.likeTweet(tweet, user)
+        }
+        throw new Error('Bad Request')
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
+
+const dislikeTweet = async (tweet, user) => {
+    try {
+        if (tweet) {
+            tweet = tweet.pop()
+            return await Store.dislikeTweet(tweet, user)
+        }
+        throw new Error('Bad Request')
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
+
+module.exports = { addTweet, updateTweet, deleteTweet, viewTweets, likeTweet, dislikeTweet }

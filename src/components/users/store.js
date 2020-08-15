@@ -2,6 +2,7 @@
 const Model = require('./model')
 const FollowsModel = require('../follows/model')
 const FollowersModel = require('../followers/model')
+const RetweetsModel = require('../retweets/model')
 
 exports.registerAccount = async (user) => {
     try {
@@ -12,8 +13,10 @@ exports.registerAccount = async (user) => {
         const newAccount = new Model(user)
         const newFollowsSpace = new FollowsModel({ owner: newAccount._id })
         const newFollowersSpace = new FollowersModel({ owner: newAccount._id })
+        const newRetweetsSpace = new RetweetsModel({ owner: newAccount._id })
         await newFollowersSpace.save()
         await newFollowsSpace.save()
+        await newRetweetsSpace.save()
         return await newAccount.save()
     } catch (error) {
         console.error('[ERROR] => ', error)
